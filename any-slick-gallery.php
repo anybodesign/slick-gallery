@@ -123,6 +123,15 @@ function any_slkg_add_css() {
 		false
 	);
 	wp_enqueue_style( 'slick' );
+
+	wp_register_style(
+		'css-slkg', 
+	    plugins_url( '/css/slick-gallery.css' , __FILE__ ),
+		array(), 
+		'1.0', 
+		false
+	);
+	wp_enqueue_style( 'css-slkg' );	
 }    
 add_action('wp_enqueue_scripts', 'any_slkg_add_css');
 
