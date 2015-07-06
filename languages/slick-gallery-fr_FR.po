@@ -1,0 +1,91 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Slick Gallery 1.0\n"
+"POT-Creation-Date: 2015-07-06 09:12+0200\n"
+"PO-Revision-Date: 2015-07-06 09:14+0200\n"
+"Last-Translator: Thomas Villain <atelier@anybodesign.com>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/settings.php:25
+msgid "Galleries Settings"
+msgstr "Réglages des galeries"
+
+#: admin/settings.php:35
+msgid "Autoplay"
+msgstr "Lecture automatique"
+
+#: admin/settings.php:44
+msgid "Transition speed"
+msgstr "Vitesse de lecture"
+
+#: admin/settings.php:56
+msgid "Navigation arrows"
+msgstr "Flèches de navigation"
+
+#: admin/settings.php:66
+msgid "Arrows color"
+msgstr "Couleur des flèches"
+
+#: admin/settings.php:75
+msgid "Pagination dots"
+msgstr "Points de pagination"
+
+#: admin/settings.php:85
+msgid "Dots color"
+msgstr "Couleur des points"
+
+#: admin/settings.php:97
+msgid "Slides to show"
+msgstr "Nombre d'éléments à afficher"
+
+#: admin/settings.php:106
+msgid "Slides to scroll"
+msgstr "Nombre d'éléments à faire défiler"
+
+#: admin/settings.php:137 admin/settings.php:156 admin/settings.php:172
+msgid "Enable"
+msgstr "Activer"
+
+#: admin/settings.php:208
+msgid "Choose options and customize your galleries."
+msgstr "Choisissez des options et personnalisez vos galeries."
+
+#: admin/settings.php:220
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Vous n'avez pas les droits suffisants pour accéder à cette page."
+
+#: admin/settings.php:271
+msgid "Credits"
+msgstr "Crédits"
+
+#: admin/settings.php:273
+msgid ""
+"This plugin is based on Slick, a jQuery plugin by Ken Wheeler. You can visit "
+"the official website here: <a href=\"https://kenwheeler.github.io/slick/\" "
+"title=\"Slick official site\">https://kenwheeler.github.io/slick/"
+msgstr ""
+"Ce plugin est basé sur Slick, un plugin jQuery développé par Ken Wheeler. "
+"Vous pouvez visiter le site officiel ici : <a href=\"https://kenwheeler."
+"github.io/slick/\" title=\"Slick official site\">https://kenwheeler.github."
+"io/slick/"
+
+#: admin/settings.php:276
+msgid ""
+"Made by <a href=\"http://anybodesign.com\" title=\"graphic and web design"
+"\">anybodesign.com</a> :)"
+msgstr ""
+"Créé par <a href=\"http://anybodesign.com\" title=\"création graphique et "
+"web design\">anybodesign.com</a> :)"
+
+#: any-slick-gallery.php:137
+msgid "Settings"
+msgstr "Réglages"

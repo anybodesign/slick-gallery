@@ -28,16 +28,7 @@ function any_slkg_settings_init(  ) {
 	);
 	
 	
-		// Style and Autoplay
-		
-		add_settings_field( 
-			'any_slkg_style', 
-			__( 'Slide or Fade ?', 'slick-gallery' ), 
-			'any_slkg_style_render', 
-			'any_slkg_plugin_page', 
-			'any_slkg_plugin_page_section' 
-		);
-		register_setting( 'any_slkg_plugin_page', 'any_slkg_style' );
+		// Autoplay
 		
 		add_settings_field( 
 			'any_slkg_auto', 
@@ -98,16 +89,26 @@ function any_slkg_settings_init(  ) {
 		);
 		register_setting( 'any_slkg_plugin_page', 'any_slkg_dotscolor' );
 		
-		// Height
+		
+		// Slides to show and to scroll
 		
 		add_settings_field( 
-			'any_slkg_height', 
-			__( 'Adaptive height', 'slick-gallery' ), 
-			'any_slkg_height_render', 
+			'any_slkg_slides', 
+			__( 'Slides to show', 'slick-gallery' ), 
+			'any_slkg_slides_render', 
 			'any_slkg_plugin_page', 
 			'any_slkg_plugin_page_section' 
 		);
-		register_setting( 'any_slkg_plugin_page', 'any_slkg_height' );
+		register_setting( 'any_slkg_plugin_page', 'any_slkg_slides' );
+
+		add_settings_field( 
+			'any_slkg_scroll', 
+			__( 'Slides to scroll', 'slick-gallery' ), 
+			'any_slkg_scroll_render', 
+			'any_slkg_plugin_page', 
+			'any_slkg_plugin_page_section' 
+		);
+		register_setting( 'any_slkg_plugin_page', 'any_slkg_scroll' );
 		
 
 }
@@ -139,9 +140,9 @@ function any_slkg_auto_render(  ) {
 
 function any_slkg_speed_render(  ) { 
 
-	$options = get_option( 'any_slkg_speed', 4000 );
+	$options = get_option( 'any_slkg_speed', 3000 );
 	?>
-	<input type='text' name='any_slkg_speed' value='<?php echo $options; ?>' placeholder='4000'>
+	<input type='text' name='any_slkg_speed' value='<?php echo $options; ?>' placeholder='3000'>
 	<?php
 }
 
@@ -158,7 +159,7 @@ function any_slkg_arrows_render(  ) {
 
 function any_slkg_arrowscolor_render(  ) { 
 
-	$options = get_option( 'any_slkg_arrowscolor', '#000000' );
+	$options = get_option( 'any_slkg_arrowscolor', '#999999' );
 	?>
 	<input type='text' name='any_slkg_arrowscolor' value='<?php echo $options; ?>' placeholder='#CCCCCC'>
 	<?php
@@ -174,29 +175,37 @@ function any_slkg_dots_render(  ) {
 
 function any_slkg_dotscolor_render(  ) { 
 
-	$options = get_option( 'any_slkg_dotscolor', '#000000' );
+	$options = get_option( 'any_slkg_dotscolor', '#666666' );
 	?>
 	<input type='text' name='any_slkg_dotscolor' value='<?php echo $options; ?>' placeholder='#CCCCCC'>
 	<?php
 }
 
 
-// Height
+// Slides
 
-function any_slkg_height_render(  ) { 
+function any_slkg_slides_render(  ) { 
 
-	$options = get_option( 'any_slkg_height', 1 );
+	$options = get_option( 'any_slkg_slides', 4 );
 	?>
-	<input type='checkbox' name='any_slkg_height' <?php checked( 1, $options, true ); ?> value='1'> <?php _e('Enable','slick-gallery'); ?>
+	<input type='number' name='any_slkg_slides' value='<?php echo $options; ?>' placeholder='4'>
 	<?php
 }
 
+function any_slkg_scroll_render(  ) { 
+
+	$options = get_option( 'any_slkg_scroll', 4 );
+	?>
+	<input type='number' name='any_slkg_scroll' value='<?php echo $options; ?>' placeholder='4'>
+	<?php
+
+}
 
 
 
 function any_slkg_settings_section_callback(  ) { 
 
-	echo __( 'Choose options to customize your slider.', 'slick-gallery' );
+	echo __( 'Choose options and customize your galleries.', 'slick-gallery' );
 
 }
 
@@ -216,7 +225,7 @@ function any_slkg_options_page() {
 
 <div class="wrap">
 		
-	<h2><?php echo slkg_NAME; ?></h2>
+	<h2><?php echo SLKG_NAME; ?></h2>
 	
 	<form action='options.php' method='post'>
 
@@ -263,7 +272,7 @@ function any_slkg_options_page() {
 	
 		<p><?php _e('This plugin is based on Slick, a jQuery plugin by Ken Wheeler. You can visit the official website here: <a href="https://kenwheeler.github.io/slick/" title="Slick official site">https://kenwheeler.github.io/slick/','slick-gallery'); ?></a></p>
 
-		<p><?php echo '<img src="' . slkg_PATH .'/img/anybodesign-logo.svg" width="70" alt="logo anybodesign" style="vertical-align:middle" /> '; ?> 
+		<p><?php echo '<img src="' . SLKG_PATH .'/img/anybodesign-logo.svg" width="70" alt="logo anybodesign" style="vertical-align:middle" /> '; ?> 
 		<?php _e('Made by <a href="http://anybodesign.com" title="graphic and web design">anybodesign.com</a> :)','slick-gallery'); ?></p>
 
 </div>

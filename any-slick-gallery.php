@@ -48,7 +48,7 @@ define ('SLKG_VERSION', '1.0');
 --------------------------------------------- */
 
 
-load_plugin_textdomain( 'slick-galleries', false, basename( dirname( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain( 'slick-gallery', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 
 /* ------------------------------------------
@@ -74,14 +74,32 @@ add_action('wp_enqueue_scripts', 'any_slkg_add_js');
 
 function any_slkg_print_script() {
 
+// Default values as vars
+
+$dots = get_option('any_slkg_dots', 1);
+if ($dots) { $dotsok = 'true'; } else { $dotsok = 'false'; }
+$arrows = get_option('any_slkg_arrows', 1);
+if ($arrows) { $arrowsok = 'true'; } else { $arrowsok = 'false'; }
+$auto = get_option('any_slkg_auto', 1);
+if ($auto) { $autook = 'true'; } else { $autook = 'false'; }
+$speed = get_option('any_slkg_speed', 4000);
+if ($speed) { $speedok = $speed; } else { $speedok = 4000; }
+$slides = get_option('any_slkg_slides', 4);
+if ($slides) { $slidesok = $slides; } else { $slidesok = 4; }
+$scroll = get_option('any_slkg_scroll', 4);
+if ($scroll) { $scrollok = $scroll; } else { $scrollok = 4; }
+
+
 print '
 <script>
 jQuery(document).ready(function() {
 	jQuery(".slicky-gallery").slick({
-		arrows: true,
-		dots: true,
-		slidesToShow: 3,
-		slidesToScroll: 3
+		arrows: '.$arrowsok.',
+		dots: '.$dotsok.',
+		slidesToShow: '.$slidesok.',
+		slidesToScroll: '.$scrollok.',
+		autoplay: '.$autook.',
+		autoplaySpeed: '.$speedok.'		
 	});
 });
 </script>
@@ -106,23 +124,29 @@ function any_slkg_add_css() {
 	);
 	wp_enqueue_style( 'slick' );
 }    
-add_action('wp_enqueue_scripts', 'any_add_slickg_css');
+add_action('wp_enqueue_scripts', 'any_slkg_add_css');
 
 
 
-function any_print_slickg_css() {
+function any_slkg_print_css() {
+
+$dotscolor = get_option('any_slkg_dotscolor');
+if ($dotscolor) { $dotscolorok = $dotscolor; } else { $dotscolorok = '#999999'; }
+$arrowscolor = get_option('any_slkg_arrowscolor');
+if ($arrowscolor) { $arrowscolorok = $arrowscolor; } else { $arrowscolorok = '#666666'; }
+
  
 print '<style>
 .slicky-gallery .slick-prev:before, .slicky-gallery .slick-next:before {
-	color: #999999;
+	color: '.$arrowscolorok.';
 }
 .slicky-gallery .slick-dots li button:before,
 .slicky-gallery .slick-dots li.slick-active button:before {
-	color: #666666;
+	color: '.$dotscolorok.';
 }
  </style>';
 }
-add_action('wp_head', 'any_slkg_add_css', 100);
+add_action('wp_head', 'any_slkg_print_css', 100);
 
 
 
@@ -145,141 +169,143 @@ include( dirname( __FILE__ ) . '/admin/settings.php' );
 /* ------------------------------------------
 // Gallery Output ---------------------------
 --------------------------------------------- */
- 
- 
-remove_shortcode('gallery', 'gallery_shortcode');
-add_shortcode('gallery', 'any_custom_gallery');
 
-function any_custom_gallery($attr) {
+function any_slkg_custom_gallery($output, $attr) {
+
 	$post = get_post();
 
 	static $instance = 0;
 	$instance++;
 
 	if ( ! empty( $attr['ids'] ) ) {
-		// 'ids' is explicitly ordered, unless you specify otherwise.
-		if ( empty( $attr['orderby'] ) )
+		if ( empty( $attr['orderby'] ) ) {
 			$attr['orderby'] = 'post__in';
+		}
 		$attr['include'] = $attr['ids'];
 	}
 
-	// Allow plugins/themes to override the default gallery template.
-	$output = apply_filters('post_gallery', '', $attr);
-	if ( $output != '' )
-		return $output;
-
-	// We're trusting author input, so let's at least make sure it looks like a valid orderby statement
-	if ( isset( $attr['orderby'] ) ) {
-		$attr['orderby'] = sanitize_sql_orderby( $attr['orderby'] );
-		if ( !$attr['orderby'] )
-			unset( $attr['orderby'] );
-	}
-
-	extract(shortcode_atts(array(
+	$html5 = current_theme_supports( 'html5', 'gallery' );
+	$atts = shortcode_atts( array(
 		'order'      => 'ASC',
 		'orderby'    => 'menu_order ID',
 		'id'         => $post ? $post->ID : 0,
-		'itemtag'    => 'li',
-		'icontag'    => '',
-		'captiontag' => 'p',
-		'columns'    => 3,
+		'captiontag' => $html5 ? 'figcaption' : 'dd',
 		'size'       => 'thumbnail',
 		'include'    => '',
 		'exclude'    => '',
 		'link'       => ''
-	), $attr, 'gallery'));
+	), $attr, 'gallery' );
 
-	$id = intval($id);
-	if ( 'RAND' == $order )
-		$orderby = 'none';
+	$id = intval( $atts['id'] );
 
-	if ( !empty($include) ) {
-		$_attachments = get_posts( array('include' => $include, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+	if ( ! empty( $atts['include'] ) ) {
+		$_attachments = get_posts( array( 'include' => $atts['include'], 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
 
 		$attachments = array();
 		foreach ( $_attachments as $key => $val ) {
 			$attachments[$val->ID] = $_attachments[$key];
 		}
-	} elseif ( !empty($exclude) ) {
-		$attachments = get_children( array('post_parent' => $id, 'exclude' => $exclude, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+	} elseif ( ! empty( $atts['exclude'] ) ) {
+		$attachments = get_children( array( 'post_parent' => $id, 'exclude' => $atts['exclude'], 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
 	} else {
-		$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+		$attachments = get_children( array( 'post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
 	}
 
-	if ( empty($attachments) )
+	if ( empty( $attachments ) ) {
 		return '';
+	}
 
 	if ( is_feed() ) {
 		$output = "\n";
-		foreach ( $attachments as $att_id => $attachment )
-			$output .= wp_get_attachment_link($att_id, $size, true) . "\n";
+		foreach ( $attachments as $att_id => $attachment ) {
+			$output .= wp_get_attachment_link( $att_id, $atts['size'], true ) . "\n";
+		}
 		return $output;
 	}
 
-	$itemtag = tag_escape($itemtag);
-	$captiontag = tag_escape($captiontag);
-	$icontag = tag_escape($icontag);
-	$valid_tags = wp_kses_allowed_html( 'post' );
-	if ( ! isset( $valid_tags[ $itemtag ] ) )
-		$itemtag = 'li';
-	if ( ! isset( $valid_tags[ $captiontag ] ) )
-		$captiontag = 'p';
-	if ( ! isset( $valid_tags[ $icontag ] ) )
-		$icontag = '';
 
-	$columns = intval($columns);
-	$itemwidth = $columns > 0 ? floor(100/$columns) : 100;
-	$float = is_rtl() ? 'right' : 'left';
+	$captiontag = tag_escape( $atts['captiontag'] );
 
 	$selector = "gallery-{$instance}";
+	$size_class = sanitize_html_class( $atts['size'] );
+	
+	$gallery_div = "<div id='$selector' class='slicky-gallery gallery galleryid-{$id} gallery-size-{$size_class}'>";
 
-	$gallery_style = $gallery_div = '';
-	if ( apply_filters( 'use_default_gallery_style', true ) )
-		$gallery_style = " ";
-	$size_class = sanitize_html_class( $size );
-	
-	$gallery_div = "<div class='slicky-gallery galleryid-{$id}'>";
-	
-	$output = apply_filters( 'gallery_style', $gallery_style . "\n\t\t" . $gallery_div );
+
+	// Output
+
+	$output = $gallery_div;
 
 	$i = 0;
 	foreach ( $attachments as $id => $attachment ) {
-		if ( ! empty( $link ) && 'file' === $link )
-			$image_output = wp_get_attachment_link( $id, 'large', false, false );
-		elseif ( ! empty( $link ) && 'none' === $link )
-			$image_output = wp_get_attachment_image( $id, 'large', false );
-		else
-			$image_output = wp_get_attachment_link( $id, 'large', true, false );
 
+		$attr = ( trim( $attachment->post_excerpt ) ) ? array( 'aria-describedby' => "$selector-$id" ) : '';
+		$image_url = wp_get_attachment_url($id);
+		$image_page = get_attachment_link($id);
 		$image_meta  = wp_get_attachment_metadata( $id );
 
-		$orientation = '';
-		if ( isset( $image_meta['height'], $image_meta['width'] ) )
-			$orientation = ( $image_meta['height'] > $image_meta['width'] ) ? 'portrait' : 'landscape';
 
-		$output .= "<div class='slicky-item'><figure class='slicky-figure'>";
-		$output .= " $image_output ";
-		
-		if ( $captiontag && trim($attachment->post_excerpt) ) {
-			$output .= "
+		if ( ! empty( $atts['link'] ) && 'file' === $atts['link'] ) {
+			// Link to file
+			$image_output = wp_get_attachment_link( $id, $atts['size'], false, false, false, $attr );
+			$caption_output = "
+				<a href='$image_url' title='$attachment->post_excerpt'><figcaption class='slicky-caption'>
+				" . wptexturize($attachment->post_excerpt) . "
+				</figcaption></a>";
+			
+		} elseif ( ! empty( $atts['link'] ) && 'none' === $atts['link'] ) {
+			// No link 
+			$image_output = wp_get_attachment_image( $id, $atts['size'], false, $attr );
+			$caption_output = "
 				<figcaption class='slicky-caption'>
 				" . wptexturize($attachment->post_excerpt) . "
 				</figcaption>";
+		
+		} else {
+			// Link to attachment page
+			$image_output = wp_get_attachment_link( $id, $atts['size'], true, false, false, $attr );
+			$caption_output = "
+				<a href='$image_page' title='$attachment->post_excerpt'><figcaption class='slicky-caption'>
+				" . wptexturize($attachment->post_excerpt) . "
+				</figcaption></a>";
 		}
 		
-		$output .= "</figure></div>";
+		$orientation = '';
+		if ( isset( $image_meta['height'], $image_meta['width'] ) ) {
+			$orientation = ( $image_meta['height'] > $image_meta['width'] ) ? 'portrait' : 'landscape';
+		}
+		
+		$output .= "<div class='slicky-item'>";
+		$output .= "<figure class='slicky-figure {$orientation}'>";
+		$output .= " $image_output ";
+		if ( $captiontag && trim($attachment->post_excerpt) ) {
+			$output .= " $caption_output ";
+		}
+		$output .= "</figure></div>";		
+
 	}
-		$output .= "</div>";
+
+
+	$output .= "
+		</div>\n";
 
 	return $output;
+		
 }
 
 
-function any_add_title_attachment_link($link, $id = null) {
+
+function any_slkg_add_title_attachment_link( $link, $id = null ) {
+	
 	$id = intval( $id );
 	$_post = get_post( $id );
 	$post_title = esc_attr( $_post->post_title );
 	$post_caption = esc_attr( $_post->post_excerpt );
 	return str_replace('<a href', '<a title="'. $post_caption .'" href', $link);
+	
 }
-add_filter('wp_get_attachment_link', 'any_add_title_attachment_link', 10, 2);
+
+
+add_filter( 'post_gallery', 'any_slkg_custom_gallery', 10, 2 );
+add_filter( 'wp_get_attachment_link', 'any_slkg_add_title_attachment_link', 10, 2 );
+//add_filter( 'use_default_gallery_style', '__return_false' );
