@@ -3,7 +3,7 @@
 Plugin Name: Slick Gallery
 Description: Custom output of WordPress native galleries using Slick by Ken Wheeler. 
 Plugin URI: https://github.com/anybodesign/slick-galleries/
-Version: 1.0
+Version: 1.1
 Author: Thomas Villain - Anybodesign
 Author URI: http://anybodesign.com/
 License: GPL2
@@ -88,7 +88,7 @@ $slides = get_option('any_slkg_slides', 4);
 if ($slides) { $slidesok = $slides; } else { $slidesok = 4; }
 $scroll = get_option('any_slkg_scroll', 4);
 if ($scroll) { $scrollok = $scroll; } else { $scrollok = 4; }
-
+$style = get_option('any_slkg_style', 'true');
 
 print '
 <script>
@@ -99,7 +99,8 @@ jQuery(document).ready(function() {
 		slidesToShow: '.$slidesok.',
 		slidesToScroll: '.$scrollok.',
 		autoplay: '.$autook.',
-		autoplaySpeed: '.$speedok.'		
+		autoplaySpeed: '.$speedok.',
+		fade: '.$style.'		
 	});
 });
 </script>
@@ -255,28 +256,29 @@ function any_slkg_custom_gallery($output, $attr) {
 
 
 		if ( ! empty( $atts['link'] ) && 'file' === $atts['link'] ) {
+			
 			// Link to file
 			$image_output = wp_get_attachment_link( $id, $atts['size'], false, false, false, $attr );
 			$caption_output = "
-				<a href='$image_url' title='$attachment->post_excerpt'><figcaption class='slicky-caption'>
+				<a class='' href='$image_url' title='$attachment->post_excerpt'><figcaption class='slicky-caption'><span>
 				" . wptexturize($attachment->post_excerpt) . "
-				</figcaption></a>";
+				</span></figcaption></a>";
 			
 		} elseif ( ! empty( $atts['link'] ) && 'none' === $atts['link'] ) {
 			// No link 
 			$image_output = wp_get_attachment_image( $id, $atts['size'], false, $attr );
 			$caption_output = "
-				<figcaption class='slicky-caption'>
+				<figcaption class='slicky-caption'><span>
 				" . wptexturize($attachment->post_excerpt) . "
-				</figcaption>";
+				</span></figcaption>";
 		
 		} else {
 			// Link to attachment page
 			$image_output = wp_get_attachment_link( $id, $atts['size'], true, false, false, $attr );
 			$caption_output = "
-				<a href='$image_page' title='$attachment->post_excerpt'><figcaption class='slicky-caption'>
+				<a href='$image_page' title='$attachment->post_excerpt'><figcaption class='slicky-caption'><span>
 				" . wptexturize($attachment->post_excerpt) . "
-				</figcaption></a>";
+				</span></figcaption></a>";
 		}
 		
 		$orientation = '';
@@ -297,7 +299,8 @@ function any_slkg_custom_gallery($output, $attr) {
 
 	$output .= "
 		</div>\n";
-
+	
+	//add_thickbox();	
 	return $output;
 		
 }

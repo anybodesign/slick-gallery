@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Slick Gallery 1.0\n"
-"POT-Creation-Date: 2015-07-06 09:12+0200\n"
-"PO-Revision-Date: 2015-07-06 09:14+0200\n"
+"POT-Creation-Date: 2015-09-17 23:41+0200\n"
+"PO-Revision-Date: 2015-09-17 23:42+0200\n"
 "Last-Translator: Thomas Villain <atelier@anybodesign.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-KeywordsList: _e;__\n"
@@ -51,23 +51,27 @@ msgstr "Nombre d'éléments à afficher"
 msgid "Slides to scroll"
 msgstr "Nombre d'éléments à faire défiler"
 
-#: admin/settings.php:137 admin/settings.php:156 admin/settings.php:172
+#: admin/settings.php:118
+msgid "Slide or Fade ?"
+msgstr "Slide ou Fade ?"
+
+#: admin/settings.php:148 admin/settings.php:167 admin/settings.php:183
 msgid "Enable"
 msgstr "Activer"
 
-#: admin/settings.php:208
+#: admin/settings.php:218
 msgid "Choose options and customize your galleries."
 msgstr "Choisissez des options et personnalisez vos galeries."
 
-#: admin/settings.php:220
+#: admin/settings.php:230
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Vous n'avez pas les droits suffisants pour accéder à cette page."
 
-#: admin/settings.php:271
+#: admin/settings.php:281
 msgid "Credits"
 msgstr "Crédits"
 
-#: admin/settings.php:273
+#: admin/settings.php:283
 msgid ""
 "This plugin is based on Slick, a jQuery plugin by Ken Wheeler. You can visit "
 "the official website here: <a href=\"https://kenwheeler.github.io/slick/\" "
@@ -78,7 +82,7 @@ msgstr ""
 "github.io/slick/\" title=\"Slick official site\">https://kenwheeler.github."
 "io/slick/"
 
-#: admin/settings.php:276
+#: admin/settings.php:286
 msgid ""
 "Made by <a href=\"http://anybodesign.com\" title=\"graphic and web design"
 "\">anybodesign.com</a> :)"
@@ -86,6 +90,6 @@ msgstr ""
 "Créé par <a href=\"http://anybodesign.com\" title=\"création graphique et "
 "web design\">anybodesign.com</a> :)"
 
-#: any-slick-gallery.php:137
+#: any-slick-gallery.php:171
 msgid "Settings"
 msgstr "Réglages"

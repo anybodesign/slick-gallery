@@ -109,7 +109,18 @@ function any_slkg_settings_init(  ) {
 			'any_slkg_plugin_page_section' 
 		);
 		register_setting( 'any_slkg_plugin_page', 'any_slkg_scroll' );
+
 		
+		// Style
+		
+		add_settings_field( 
+			'any_slkg_style', 
+			__( 'Slide or Fade ?', 'slick-gallery' ), 
+			'any_slkg_style_render', 
+			'any_slkg_plugin_page', 
+			'any_slkg_plugin_page_section' 
+		);
+		register_setting( 'any_slkg_plugin_page', 'any_slkg_style' );
 
 }
 
@@ -200,7 +211,6 @@ function any_slkg_scroll_render(  ) {
 	<?php
 
 }
-
 
 
 function any_slkg_settings_section_callback(  ) { 
