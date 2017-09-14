@@ -1,10 +1,10 @@
 /* Slick Slider Plugin CSS */
 
-.slick-slider, .slick-list {
+.slicky-gallery, .slicky-gallery .slick-list {
 	z-index: 1; /* antialias fix */
 }
 
-ul.slick-dots {
+.slicky-gallery ul.slick-dots {
 	margin: 0 0 20px 0 !important;
 }
 
@@ -30,7 +30,8 @@ ul.slick-dots {
 .slicky-gallery .slicky-caption span {
 	display: block;
 	position: relative;
-	top: 50%; transform: translateY(-50%);
+	top: 50%;
+	transform: translateY(-50%);
 	-webkit-transform: translateY(-50%);
 }
 

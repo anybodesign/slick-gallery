@@ -3,9 +3,9 @@
 Plugin Name: Slick Gallery
 Description: Custom output of WordPress native galleries using Slick by Ken Wheeler. 
 Plugin URI: https://github.com/anybodesign/slick-galleries/
-Version: 1.1
+Version: 1.3
 Author: Thomas Villain - Anybodesign
-Author URI: http://anybodesign.com/
+Author URI: https://anybodesign.com/
 License: GPL2
 */
 
@@ -34,7 +34,7 @@ defined('ABSPATH') or die('°_°’');
 
 define ('SLKG_PATH', WP_PLUGIN_URL . '/' . plugin_basename( dirname(__FILE__) ) . '/' );
 define ('SLKG_NAME', 'Slick Gallery');
-define ('SLKG_VERSION', '1.0');
+define ('SLKG_VERSION', '1.2');
 
 
 /* ------------------------------------------
@@ -89,6 +89,8 @@ if ($slides) { $slidesok = $slides; } else { $slidesok = 4; }
 $scroll = get_option('any_slkg_scroll', 4);
 if ($scroll) { $scrollok = $scroll; } else { $scrollok = 4; }
 $style = get_option('any_slkg_style', 'true');
+$height = get_option('any_slkg_height', 1);
+if ($height) { $heightok = 'true'; } else { $heightok = 'false'; }
 
 print '
 <script>
@@ -100,7 +102,8 @@ jQuery(document).ready(function() {
 		slidesToScroll: '.$scrollok.',
 		autoplay: '.$autook.',
 		autoplaySpeed: '.$speedok.',
-		fade: '.$style.'		
+		fade: '.$style.',		
+		adaptiveHeight: '.$heightok.'
 	});
 });
 </script>

@@ -122,6 +122,19 @@ function any_slkg_settings_init(  ) {
 		);
 		register_setting( 'any_slkg_plugin_page', 'any_slkg_style' );
 
+
+		// Height
+		
+		add_settings_field( 
+			'any_slkg_height', 
+			__( 'Adaptive height', 'slick-gallery' ), 
+			'any_slkg_height_render', 
+			'any_slkg_plugin_page', 
+			'any_slkg_plugin_page_section' 
+		);
+		register_setting( 'any_slkg_plugin_page', 'any_slkg_height' );
+
+
 }
 
 
@@ -212,6 +225,16 @@ function any_slkg_scroll_render(  ) {
 
 }
 
+// Height
+
+function any_slkg_height_render(  ) { 
+
+	$options = get_option( 'any_slkg_height', 1 );
+	?>
+	<input type='checkbox' name='any_slkg_height' <?php checked( 1, $options, true ); ?> value='1'> <?php _e('Enable','slick-gallery'); ?>
+	<?php
+}
+
 
 function any_slkg_settings_section_callback(  ) { 
 
@@ -247,7 +270,7 @@ function any_slkg_options_page() {
 		
 	</form>
 
-	<? /*
+	<?php /*
 	<h3><?php _e('CSS customization','slick-gallery'); ?></h3>			
 	<p><?php _e('If you want to customize the design of the galleries, here is the generated code:','slick-gallery'); ?></p>
 			
@@ -283,7 +306,7 @@ function any_slkg_options_page() {
 		<p><?php _e('This plugin is based on Slick, a jQuery plugin by Ken Wheeler. You can visit the official website here: <a href="https://kenwheeler.github.io/slick/" title="Slick official site">https://kenwheeler.github.io/slick/','slick-gallery'); ?></a></p>
 
 		<p><?php echo '<img src="' . SLKG_PATH .'/img/anybodesign-logo.svg" width="70" alt="logo anybodesign" style="vertical-align:middle" /> '; ?> 
-		<?php _e('Made by <a href="http://anybodesign.com" title="graphic and web design">anybodesign.com</a> :)','slick-gallery'); ?></p>
+		<?php _e('Made by <a href="https://anybodesign.com" title="graphic and web design">anybodesign.com</a> :)','slick-gallery'); ?></p>
 
 </div>
 	
